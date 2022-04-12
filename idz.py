@@ -190,7 +190,7 @@ def main(command_line=None):
     add = subparsers.add_parser(
         "add",
         parents=[file_parser],
-        help="Add a new worker"
+        help="Add a new flight"
     )
     add.add_argument(
         "-d",
