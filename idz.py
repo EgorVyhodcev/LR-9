@@ -12,7 +12,6 @@ def display_flights(flights: t.List[t.Dict[str, t.Any]]) -> None:
     """
     Отобразить список рейсов.
     """
-    # Проверить, что список рейсов не пуст.
     if flights:
         # Заголовок таблицы.
         line = '+-{}-+-{}-+-{}-+-{}-+'.format(
@@ -31,7 +30,6 @@ def display_flights(flights: t.List[t.Dict[str, t.Any]]) -> None:
             )
         )
         print(line)
-        # Вывести данные о всех сотрудниках.
         for idx, flight in enumerate(flights, 1):
             print(
                 '| {:>4} | {:<30} | {:<20} | {:<15} |'.format(
@@ -52,7 +50,6 @@ def create_db(database_path: Path) -> None:
     """
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
-    # Создать таблицу с информацией о должностях.
     cursor.execute(
         """
     CREATE TABLE IF NOT EXISTS flight_numbers (
@@ -61,7 +58,6 @@ def create_db(database_path: Path) -> None:
         )
         """
     )
-    # Создать таблицу с информацией о работниках.
     cursor.execute(
         """
     CREATE TABLE IF NOT EXISTS flights (
@@ -186,7 +182,6 @@ def main(command_line=None):
         version="%(prog)s 0.1.0"
     )
     subparsers = parser.add_subparsers(dest="command")
-    # Создать субпарсер для добавления работника.
     add = subparsers.add_parser(
         "add",
         parents=[file_parser],
@@ -213,13 +208,11 @@ def main(command_line=None):
         required=True,
         help="The airplane type"
     )
-    # Создать субпарсер для отображения всех работников.
     _ = subparsers.add_parser(
         "display",
         parents=[file_parser],
         help="Display all flights"
     )
-    # Создать субпарсер для выбора работников.
     select = subparsers.add_parser(
         "select",
         parents=[file_parser],
@@ -238,13 +231,10 @@ def main(command_line=None):
     # Получить путь к файлу базы данных.
     db_path = Path(args.db)
     create_db(db_path)
-    # Добавить работника.
     if args.command == "add":
         add_flight(db_path, args.dest, args.flight_num, args.type)
-    # Отобразить всех работников.
     elif args.command == "display":
         display_flights(select_all(db_path))
-    # Выбрать требуемых рааботников.
     elif args.command == "select":
         display_flights(select_flights(db_path, args.type))
         pass
